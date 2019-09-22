@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>New time</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <!-- <link rel='stylesheet' type='text/css' media='screen' href='main.css'> -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script>
+        function submitToAPI(e) {
+            e.preventDefault();
+            var URL = "https://xxx.execute-api.eu-west-1.amazonaws.com/dev/";
+
+            var date = $("#date-input").val();
+
+            var data = {
+                date: date
+            };
+
+            $.ajax({
+                type: "POST",
+                url: URL,
+                dataType: "json",
+                crossDomain: "true",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+
+                success: function () {
+                    // clear form and show a success message
+                    alert("Time recorded");
+                    document.getElementById("contact-form").reset();
+                    location.reload();
+                },
+                error: function (request, error) {
+                    console.log(arguments);
+                    alert(" Can't do because: " + error);
+                }
+            });
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div class="d-flex justify-content-center">
+        <form id="contact-form" method="post">
+            <div class="form-group">
+                <label>Date & time</label>
+                <input type="datetime-local" id="date-input" class="form-control">
+            </div>
+            <button type="button" onClick="submitToAPI(event)" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <div class="d-flex justify-content-center mt-5">
+        <form>
+            <div class="form-group">
+                <input type="button" value="See overview" class="btn btn-primary"
+                    onclick="window.location.href='http://xxx.s3-website-eu-west-1.amazonaws.com/overview.html'" />
+            </div>
+        </form>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+        $('input[type=datetime-local]').val(new Date(Date.now() + 2 * 3600 * 1000).toJSON().slice(0, 19));
+    });
+</script>
+
+</html>
